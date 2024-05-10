@@ -1,11 +1,11 @@
 -- Values
 
-_G.toggleAutoQuest = false
-_G.toggleAutoEvolve = false
-_G.selectedQuest = {}
-_G.selectedEvolve = {}
+getgenv().toggleAutoQuest = false
+getgenv().toggleAutoEvolve = false
+getgenv().selectedQuest = {}
+getgenv().selectedEvolve = {}
 
-_G.quest_options = {
+getgenv().quest_options = {
   "MegaGrind", -- freeze land
   "GodGrind", -- dark area
   "HardGrind", -- digital desolation
@@ -13,7 +13,7 @@ _G.quest_options = {
   "HardWorldGrind", -- hard wb
 }
 
-_G.digimon_evolve_options = {
+getgenv().digimon_evolve_options = {
   "BarbamonX",
   "Ordinemon",
   "Dianamon",
@@ -24,9 +24,9 @@ _G.digimon_evolve_options = {
 -- Functions
 
 function autoQuest()
-  while _G.toggleAutoQuest == true do
-    for i, quest in ipairs(_G.selectedQuest) do
-      print("quest: ", quest)
+  while getgenv().toggleAutoQuest == true do
+    for i, quest in ipairs(getgenv().selectedQuest) do
+      
       submitQuest(quest)
       wait(0.5)
       acceptQuest(quest)
@@ -62,9 +62,9 @@ function submitQuest(quest)
 end
 
 function autoEvolve()
-  while _G.toggleAutoEvolve == true do
-    evolveTo(_G.selectedEvolve)
-    wait(5)
+  while getgenv().toggleAutoEvolve == true do
+      evolveTo(getgenv().selectedEvolve)
+      wait(5)
   end
 end
 
@@ -78,8 +78,13 @@ function evolveTo(digimon)
       }
     }
   }
-  print("evolveTo: ", digimon)
+  
   game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+end
+
+function teleport(place)
+  local player = game.Players.LocalPlayer
+  player.Character.HumanoidRootPart.CFrame = CFrame.new(place)
 end
 
 -- Menu
@@ -130,19 +135,19 @@ local Toggle1 = MainTab:CreateToggle({
   CurrentValue = false,
   Flag = "autoquest",
   Callback = function(Value)
-    _G.toggleAutoQuest = Value
+    getgenv().toggleAutoQuest = Value
     autoQuest()
   end,
 })
 
 local Dropdown1 = MainTab:CreateDropdown({
   Name = "Quests",
-  Options = _G.quest_options,
-  CurrentOption = _G.quest_options[3],
+  Options = getgenv().quest_options,
+  CurrentOption = getgenv().quest_options[3],
   MultipleOptions = true,
   Flag = "questdropdown", 
   Callback = function(Option)
-    _G.selectedQuest = Option
+    getgenv().selectedQuest = Option
   end,
 })
 
@@ -151,21 +156,19 @@ local Toggle2 = MainTab:CreateToggle({
   CurrentValue = false,
   Flag = "autoevolve",
   Callback = function(Value)
-    _G.toggleAutoEvolve = Value
+    getgenv().toggleAutoEvolve = Value
     autoEvolve()
   end,
 })
 
 local Dropdown2 = MainTab:CreateDropdown({
   Name = "Auto Evolve Digimon To",
-  Options = _G.digimon_evolve_options,
-  CurrentOption = _G.digimon_evolve_options[1],
+  Options = getgenv().digimon_evolve_options,
+  CurrentOption = { ""},
   MultipleOptions = false,
   Flag = "digimonevolvedropdown", 
   Callback = function(Option)
-    _G.selectedEvolve = Option[1]
-    print("selectedEvolve: ", _G.selectedEvolve)
-    print("option ", Option[1])
+    getgenv().selectedEvolve = Option[1]    
   end
 })
 
