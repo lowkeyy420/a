@@ -1,42 +1,41 @@
 -- Values
-_G.currentDigimon = ""
 
+_G.toggleAutoQuest = false
+_G.toggleAutoEvolve = false
+_G.selectedQuest = {}
+_G.selectedEvolve = {}
 
-local quest_options = {
-  "MegaGrind",
+_G.quest_options = {
+  "MegaGrind", -- freeze land
+  "GodGrind", -- dark area
+  "HardGrind", -- digital desolation
+  "WorldGrind", -- wb
+  "HardWorldGrind", -- hard wb
 }
 
-local digimon_evolve_options = {
+_G.digimon_evolve_options = {
   "BarbamonX",
-  "Ordinemon"
+  "Ordinemon",
+  "Dianamon",
+  "ExamonX"
 }
 
 
 -- Functions
 
-function initializeStats()
-  -- Find the player whose character matches the current script's parent
-  local players = game:GetService("Players")
-  local myPlayer = nil
-  for _, player in pairs(players:GetPlayers()) do
-    if player.Character and player.Character == script.Parent then
-      myPlayer = player
-      break
+function autoQuest()
+  while _G.toggleAutoQuest == true do
+    for i, quest in ipairs(_G.selectedQuest) do
+      print("quest: ", quest)
+      submitQuest(quest)
+      wait(0.5)
+      acceptQuest(quest)
     end
-  end
-
-  if myPlayer then
-    -- You now have access to your player's information
-    print("My player name:", myPlayer.Name)
-    print("digimon : ", myPlayer.Digimon)
-    _G.currentDigimon = myPlayer.Digimon
-  else
-    print("not found")
-    -- Handle the case where the character is not found (e.g., script not parented to a character)
+    wait(5)
   end
 end
 
-function AcceptQuest(quest)
+function acceptQuest(quest)
   local args = {
     [1] = {
       [1] = {
@@ -49,6 +48,27 @@ function AcceptQuest(quest)
   game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
 end
 
+function submitQuest(quest)
+  local args = {
+    [1] = {
+      [1] = {
+        [1] = "\28",
+        [2] = quest,
+        [3] = "Submit"
+      }
+    }
+  }
+  game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+end
+
+function autoEvolve()
+  while _G.toggleAutoEvolve == true do
+    evolveTo(_G.selectedEvolve)
+    wait(5)
+  end
+end
+
+
 function evolveTo(digimon)
   local args = {
     [1] = {
@@ -58,6 +78,7 @@ function evolveTo(digimon)
       }
     }
   }
+  print("evolveTo: ", digimon)
   game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
 end
 
@@ -67,13 +88,13 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
 
-  Name = "🔥🐱‍🐉 Digimon Masters🐕🐶",
+  Name = "Digimon Masters",
   LoadingTitle = "",
-  LoadingSubtitle = "by breadboi | monvictor",
+  LoadingSubtitle = "by breadboi",
   ConfigurationSaving = {
     Enabled = true,
     FolderName = nil, -- Create a custom folder for your hub/game
-    FileName = "Tutorial"
+    FileName = "digimonmaster"
   },
   Discord = {
     Enabled = false,
@@ -92,23 +113,66 @@ local Window = Rayfield:CreateWindow({
   }
 })
 
-
-local MainTab = Window:CreateTab("🏠 Home", nil) -- Title, Image
-local MainSection = MainTab:CreateSection("Main")
-
 Rayfield:Notify({
-  Title = "You executed the script",
+  Title = "Script successfully executed",
   Content = "Very cool gui",
-  Duration = 2,
+  Duration = 1,
 })
 
-local Dropdown = MainTab:CreateDropdown({
-  Name = "Evolve To",
-  Options = digimon_evolve_options,
-  CurrentOption = { "Starter World" },
-  MultipleOptions = false,
-  Flag = "dropdownarea", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-  Callback = function(Option)
-    print(Option)
+
+local MainTab = Window:CreateTab("Main", nil)
+local MainSection = MainTab:CreateSection("Main")
+
+local Label1 = MainTab:CreateLabel("Choose Quest Before Enabling Auto Quest")
+
+local Toggle1 = MainTab:CreateToggle({
+  Name = "Enable Auto Quest",
+  CurrentValue = false,
+  Flag = "autoquest",
+  Callback = function(Value)
+    _G.toggleAutoQuest = Value
+    autoQuest()
   end,
+})
+
+local Dropdown1 = MainTab:CreateDropdown({
+  Name = "Quests",
+  Options = _G.quest_options,
+  CurrentOption = _G.quest_options[3],
+  MultipleOptions = true,
+  Flag = "questdropdown", 
+  Callback = function(Option)
+    _G.selectedQuest = Option
+  end,
+})
+
+local Toggle2 = MainTab:CreateToggle({
+  Name = "Enable Auto Evolve",
+  CurrentValue = false,
+  Flag = "autoevolve",
+  Callback = function(Value)
+    _G.toggleAutoEvolve = Value
+    autoEvolve()
+  end,
+})
+
+local Dropdown2 = MainTab:CreateDropdown({
+  Name = "Auto Evolve Digimon To",
+  Options = _G.digimon_evolve_options,
+  CurrentOption = _G.digimon_evolve_options[1],
+  MultipleOptions = false,
+  Flag = "digimonevolvedropdown", 
+  Callback = function(Option)
+    _G.selectedEvolve = Option[1]
+    print("selectedEvolve: ", _G.selectedEvolve)
+    print("option ", Option[1])
+  end
+})
+
+
+local Button = MainTab:CreateButton({
+  Name = "Close Hub",
+  Callback = function()
+    Rayfield:Destroy()
+  end
 })
