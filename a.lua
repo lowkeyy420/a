@@ -7,6 +7,7 @@ getgenv().selectedEvolve = {}
 
 getgenv().quest_options = {
   "MegaGrind", -- freeze land
+  "JogressGrind", -- infinite mountain
   "GodGrind", -- dark area
   "HardGrind", -- digital desolation
   "WorldGrind", -- wb
@@ -179,3 +180,44 @@ local Button = MainTab:CreateButton({
     Rayfield:Destroy()
   end
 })
+
+local TeleportTab = Window:CreateTab("Teleport", nil)
+local TeleportSection = TeleportTab:CreateSection("Area")
+
+local Button1 = TeleportTab:CreateButton({
+  Name = "Western Village",
+  Callback = function()
+    teleport(Vector3.new(-3095.77, 4078.9, 1249.98))
+  end,
+})
+
+local Button2 = TeleportTab:CreateButton({
+  Name = "Freeze Land",
+  Callback = function()
+    teleport(Vector3.new(2263.09, 4151.19, -1305.74))
+  end,
+})
+
+local Button3 = TeleportTab:CreateButton({
+  Name = "Infinite Mountain",
+  Callback = function()
+    teleport(Vector3.new(-8511.37, 4085.64, -524.546))
+  end,
+})
+
+local Button4 = TeleportTab:CreateButton({
+  Name = "Dark Area",
+  Callback = function()
+    teleport(Vector3.new(-11571.6, 4536.51, -12656.3))
+  end,
+})
+
+local Button5 = TeleportTab:CreateButton({
+  Name = "Digital Desolation",
+  Callback = function()
+    teleport(Vector3.new(295.488, 4186.93, 17948))
+  end,
+})
+
+
+

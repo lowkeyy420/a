@@ -1,16 +1,89 @@
+local player = game.Players.LocalPlayer
+
+-- auto skill only for barbamonx
+local args = {
+[1] = {
+        [1] = {
+            [1] = "\7",
+            [2] = "PandemoniumLostX",
+            [4] = 180,
+            [6] = 1
+        }
+    }
+}
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+
+local player = game.Players.LocalPlayer
+
+
+-- auto reinforce training
+local args = {
+[1] = {
+        [1] = {
+            [1] = "\17",
+            [2] = "" -- playername,
+            [3] = "ExamonX",
+            [4] = "Stats", -- or Mutation or Skill or Size
+            [5] = "Reinforced", --or Regular
+            [6] = false,
+            [7] = true
+        }
+    }
+}
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+
+
+
+
 -- dash
 local args = {
-    [1] = {
+   [1] = {
       [1] = {
-        [1] = "\3",
-        [2] = "Dash",
-        [3] = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
-      
+         [1] = "\3",
+         [2] = "Dash",
+         [3] = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
       }
-    }
-  }
+   }
+}
 
-  local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+Workspace.WhiteListTarget.Loot.Chests.getChildren ( iterate.name )
+
+local args = {
+   [1] = {
+      [1] = {
+         [1] = "\14",
+         [2] = "Epic17823",
+         [3] = "PickUp",
+         [4] = "null"
+         -- [5] = Vector3.new()
+      }
+   }
+}
+
+
+{
+   [1] = "\7",
+   [2] = "Skillname",
+   [3] = Vector3.new(-10000,400,2000) -- location skill castnya dimana,
+   [4] = 73 / 109 -- damagenya
+   [5] = workspace:WaitForChild("Boss"):WaitForChild("enemy1"):WaitForChild("Torso")
+}
+
+
+
+Workspace.Boss.getChildren ( iterate.name )
+
+isModel
+.Torso.CFrame
+.Torso.Position
+
+
+skill dpt dari 
+Workspace.Playername.class(Tool)
+
+
+
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
    Name = "🔥 Example Script Hub | Game 🔫",
