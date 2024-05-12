@@ -4,6 +4,7 @@ getgenv().toggleAutoQuest = false
 getgenv().toggleAutoEvolve = false
 getgenv().selectedQuest = {}
 getgenv().selectedEvolve = {}
+getgenv().toggleAutoAttack = false
 
 getgenv().quest_options = {
   "MegaGrind", -- freeze land
@@ -81,6 +82,23 @@ function evolveTo(digimon)
   }
   
   game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+end
+
+function autoAttack()
+  while getgenv().toggleAutoAttack == true do
+    local args = {
+      [1] = {
+              [1] = {
+                  [1] = "\7",
+                  [2] = "PandemoniumLostX",
+                  [4] = 180,
+                  [6] = 1
+              }
+          }
+      }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+    wait(2)
+  end
 end
 
 function teleport(place)
@@ -181,6 +199,24 @@ local Button = MainTab:CreateButton({
   end
 })
 
+
+local DigimonTab = Window:CreateTab("Digimon", nil)
+local Label1 = DigimonTab:CreateLabel("Auto Attack Only For BarbamonX")
+local DigimonSection = DigimonTab:CreateSection("Automation")
+
+local Toggle3 = DigimonTab:CreateToggle({
+  Name = "Auto Attack",
+  CurrentValue = false,
+  Flag = "autoattack",
+  Callback = function(Value)
+    getgenv().toggleAutoAttack = Value
+    autoAttack()
+  end,
+})
+
+
+
+
 local TeleportTab = Window:CreateTab("Teleport", nil)
 local TeleportSection = TeleportTab:CreateSection("Area")
 
@@ -218,6 +254,13 @@ local Button5 = TeleportTab:CreateButton({
     teleport(Vector3.new(295.488, 4186.93, 17948))
   end,
 })
+
+local Button6 = TeleportTab:CreateButton({
+  Name = "Fossil Valley",
+  Callback = function()
+    teleport(Vector3.new(33311.80859375, 4643.3740234375, -6666.61767578125))
+  end,
+})  
 
 
 
