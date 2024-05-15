@@ -9,6 +9,7 @@ getgenv().toggleAutoAttack = false
 getgenv().quest_options = {
   "MegaGrind", -- freeze land
   "JogressGrind", -- infinite mountain
+  "SUGrind", -- infinite dungeon
   "GodGrind", -- dark area
   "HardGrind", -- digital desolation
   "WorldGrind", -- wb
