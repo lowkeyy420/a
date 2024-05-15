@@ -10,13 +10,13 @@ getgenv().toggleAutoChip = false
 getgenv().toggleAutoTeleport = false
 
 getgenv().quest_options = {
-  {"MegaGrind", "Freeze Land"},
-  {"JogressGrind", "Infinite Mountain"},
-  {"SUGrind", "Infinite Dungeon"},
-  {"GodGrind", "Dark Area"},
-  {"HardGrind", "Digital Desolation"},
-  {"WorldGrind", "World Boss"},
-  {"HardWorldGrind", "Hard World Boss"}
+  "MegaGrind", -- freeze land
+  "JogressGrind", -- infinite mountain
+  "SUGrind", -- infinite dungeon
+  "GodGrind", -- dark area
+  "HardGrind", -- digital desolation
+  "WorldGrind", -- wb
+  "HardWorldGrind", -- hard wb
 }
 
 getgenv().digimon_evolve_options = {
@@ -24,6 +24,16 @@ getgenv().digimon_evolve_options = {
   "Ordinemon",
   "Dianamon",
   "ExamonX"
+}
+
+getgenv().teleport_options = {
+  "Western Village",
+  "Freeze Land",
+  "Infinite Mountain",
+  "Infinite Dungeon",
+  "Dark Area",
+  "Digital Desolation",
+  "Fossil Valley"
 }
 
 
@@ -122,11 +132,22 @@ end
 
 function autoTeleport()
   while getgenv().toggleAutoTeleport == true do
-    
-
-
-    teleport()
-    wait(5)
+    if getgenv().selectedTeleport == "Western Village" then
+      teleport(Vector3.new(-3095.77, 4078.9, 1249.98))
+    elseif getgenv().selectedTeleport == "Freeze Land" then
+      teleport(Vector3.new(2263.09, 4151.19, -1305.74))
+    elseif getgenv().selectedTeleport == "Infinite Mountain" then
+      teleport(Vector3.new(-8511.37, 4085.64, -524.546))
+    elseif getgenv().selectedTeleport == "Infinite Dungeon" then
+      teleport(Vector3.new(-10387.4599, 3888.49682, -512.0713500))
+    elseif getgenv().selectedTeleport == "Dark Area" then
+      teleport(Vector3.new(-11571.6, 4536.51, -12656.3))
+    elseif getgenv().selectedTeleport == "Digital Desolation" then
+      teleport(Vector3.new(295.488, 4186.93, 17948))
+    elseif getgenv().selectedTeleport == "Fossil Valley" then
+      teleport(Vector3.new(33311.80859375, 4643.3740234375, -6666.61767578125))
+    end
+    wait(60)
   end
 end
 
@@ -169,7 +190,7 @@ local Window = Rayfield:CreateWindow({
 
 Rayfield:Notify({
   Title = "Script successfully executed",
-  Content = "Very cool gui",
+  Content = "kiyowow",
   Duration = 1,
 })
 
@@ -191,18 +212,12 @@ local Toggle1 = MainTab:CreateToggle({
 
 local Dropdown1 = MainTab:CreateDropdown({
   Name = "Quests",
-  Options = (function()
-      local options = {}
-      for _, quest in ipairs(getgenv().quest_options) do
-          table.insert(options, quest[2])
-      end
-      return options
-  end)(),
-  CurrentOption = getgenv().quest_options[3][2],
+  Options = getgenv().quest_options,
+  CurrentOption = {},
   MultipleOptions = true,
-  Flag = "questdropdown",
+  Flag = "questdropdown", 
   Callback = function(Option)
-      getgenv().selectedQuest = Option
+    getgenv().selectedQuest = Option
   end,
 })
 
@@ -262,17 +277,29 @@ local Toggle4 = DigimonTab:CreateToggle({
 })
 
 local DigimonLabel2 = DigimonTab:CreateLabel("Combine With Auto Evolve For Best Results")
+
+local Dropdown3 = DigimonTab:CreateDropdown({
+  Name = "Auto Teleport",
+  Options = getgenv().teleport_options,
+  CurrentOption = { "" },
+  MultipleOptions = false,
+  Flag = "teleportdropdown", 
+  Callback = function(Option)
+    getgenv().selectedTeleport = Option[1]
+    print(getgenv().selectedTeleport)
+  end,
+})
+
+
 local Toggle5 = DigimonTab:CreateToggle({
   Name = "Auto Teleport",
   CurrentValue = false,
   Flag = "autopteleport",
   Callback = function(Value)
     getgenv().toggleAutoTeleport = Value
-    autoChip()
+    autoTeleport()
   end,
 })
-
-
 
 
 local TeleportTab = Window:CreateTab("Teleport", nil)
@@ -300,20 +327,27 @@ local Button3 = TeleportTab:CreateButton({
 })
 
 local Button4 = TeleportTab:CreateButton({
+  Name = "Infinite Dungeon",
+  Callback = function()
+    teleport(Vector3.new(-10387.4599, 3888.49682, -512.0713500))
+  end,
+})
+
+local Button5 = TeleportTab:CreateButton({
   Name = "Dark Area",
   Callback = function()
     teleport(Vector3.new(-11571.6, 4536.51, -12656.3))
   end,
 })
 
-local Button5 = TeleportTab:CreateButton({
+local Button6 = TeleportTab:CreateButton({
   Name = "Digital Desolation",
   Callback = function()
     teleport(Vector3.new(295.488, 4186.93, 17948))
   end,
 })
 
-local Button6 = TeleportTab:CreateButton({
+local Button7 = TeleportTab:CreateButton({
   Name = "Fossil Valley",
   Callback = function()
     teleport(Vector3.new(33311.80859375, 4643.3740234375, -6666.61767578125))
