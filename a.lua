@@ -4,16 +4,19 @@ getgenv().toggleAutoQuest = false
 getgenv().toggleAutoEvolve = false
 getgenv().selectedQuest = {}
 getgenv().selectedEvolve = {}
+getgenv().selectedTeleport = {}
 getgenv().toggleAutoAttack = false
+getgenv().toggleAutoChip = false
+getgenv().toggleAutoTeleport = false
 
 getgenv().quest_options = {
-  "MegaGrind", -- freeze land
-  "JogressGrind", -- infinite mountain
-  "SUGrind", -- infinite dungeon
-  "GodGrind", -- dark area
-  "HardGrind", -- digital desolation
-  "WorldGrind", -- wb
-  "HardWorldGrind", -- hard wb
+  {"MegaGrind", "Freeze Land"},
+  {"JogressGrind", "Infinite Mountain"},
+  {"SUGrind", "Infinite Dungeon"},
+  {"GodGrind", "Dark Area"},
+  {"HardGrind", "Digital Desolation"},
+  {"WorldGrind", "World Boss"},
+  {"HardWorldGrind", "Hard World Boss"}
 }
 
 getgenv().digimon_evolve_options = {
@@ -102,6 +105,32 @@ function autoAttack()
   end
 end
 
+function autoChip()
+  while getgenv().toggleAutoChip == true do
+    local args = {
+      [1] = {
+              [1] = {
+                  [1] = "\t",
+                  [2] = "ATK"
+              }
+          }
+      }
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+    wait(30)
+  end
+end
+
+function autoTeleport()
+  while getgenv().toggleAutoTeleport == true do
+    
+
+
+    teleport()
+    wait(5)
+  end
+end
+
+
 function teleport(place)
   local player = game.Players.LocalPlayer
   player.Character.HumanoidRootPart.CFrame = CFrame.new(place)
@@ -162,12 +191,18 @@ local Toggle1 = MainTab:CreateToggle({
 
 local Dropdown1 = MainTab:CreateDropdown({
   Name = "Quests",
-  Options = getgenv().quest_options,
-  CurrentOption = getgenv().quest_options[3],
+  Options = (function()
+      local options = {}
+      for _, quest in ipairs(getgenv().quest_options) do
+          table.insert(options, quest[2])
+      end
+      return options
+  end)(),
+  CurrentOption = getgenv().quest_options[3][2],
   MultipleOptions = true,
-  Flag = "questdropdown", 
+  Flag = "questdropdown",
   Callback = function(Option)
-    getgenv().selectedQuest = Option
+      getgenv().selectedQuest = Option
   end,
 })
 
@@ -202,8 +237,9 @@ local Button = MainTab:CreateButton({
 
 
 local DigimonTab = Window:CreateTab("Digimon", nil)
-local Label1 = DigimonTab:CreateLabel("Auto Attack Only For BarbamonX")
-local DigimonSection = DigimonTab:CreateSection("Automation")
+local DigimonSection = MainTab:CreateSection("Notice")
+local DigimonLabel1 = DigimonTab:CreateLabel("Auto Attack Only For BarbamonX")
+local DigimonSection2 = DigimonTab:CreateSection("Automation")
 
 local Toggle3 = DigimonTab:CreateToggle({
   Name = "Auto Attack",
@@ -212,6 +248,27 @@ local Toggle3 = DigimonTab:CreateToggle({
   Callback = function(Value)
     getgenv().toggleAutoAttack = Value
     autoAttack()
+  end,
+})
+
+local Toggle4 = DigimonTab:CreateToggle({
+  Name = "Auto ATK Chip",
+  CurrentValue = false,
+  Flag = "autochip",
+  Callback = function(Value)
+    getgenv().toggleAutoChip = Value
+    autoChip()
+  end,
+})
+
+local DigimonLabel2 = DigimonTab:CreateLabel("Combine With Auto Evolve For Best Results")
+local Toggle5 = DigimonTab:CreateToggle({
+  Name = "Auto Teleport",
+  CurrentValue = false,
+  Flag = "autopteleport",
+  Callback = function(Value)
+    getgenv().toggleAutoTeleport = Value
+    autoChip()
   end,
 })
 
