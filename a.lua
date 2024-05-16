@@ -164,9 +164,9 @@ function autoTeleport()
     elseif getgenv().selectedTeleport == "Infinite Dungeon" then
       teleport(Vector3.new(-10387.4599, 3888.49682, -512.0713500))
     elseif getgenv().selectedTeleport == "Dark Area" then
-      teleport(Vector3.new(-19.8861, 4246.79, 19583.6))
+      teleport(Vector3.new(-11571.6, 4536.51, -12656.3))
     elseif getgenv().selectedTeleport == "Digital Desolation" then
-      teleport(Vector3.new(295.488, 4186.93, 17948))
+      teleport(Vector3.new(-19.8861, 4246.79, 19583.6))
     elseif getgenv().selectedTeleport == "Fossil Valley" then
       teleport(Vector3.new(33311.80859375, 4643.3740234375, -6666.61767578125))
     end
@@ -369,14 +369,14 @@ local Button4 = TeleportTab:CreateButton({
 local Button5 = TeleportTab:CreateButton({
   Name = "Dark Area",
   Callback = function()
-    teleport(Vector3.new(-19.8861, 4246.79, 19583.6))
+    teleport(Vector3.new(-11571.6, 4536.51, -12656.3))
   end,
 })
 
 local Button6 = TeleportTab:CreateButton({
   Name = "Digital Desolation",
   Callback = function()
-    teleport(Vector3.new(295.488, 4186.93, 17948))
+    teleport(Vector3.new(-19.8861, 4246.79, 19583.6))
   end,
 })
 
