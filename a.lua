@@ -8,6 +8,7 @@ getgenv().selectedTeleport = {}
 getgenv().toggleAutoAttack = false
 getgenv().toggleAutoChip = false
 getgenv().toggleAutoTeleport = false
+getgenv().toggleAutoEquipSkill = Value
 
 getgenv().quest_options = {
   "MegaGrind", -- freeze land
@@ -97,6 +98,28 @@ function evolveTo(digimon)
   
   game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
 end
+
+function autoEquipSkill()
+  while getgenv().toggleAutoEquipSkill == true do
+    equipSkill("PandemoniumLostX")
+    wait(60)
+  end
+end
+
+function equipSkill(skillName)
+  local player = game:GetService("Players").LocalPlayer
+  local playername = player.Name
+  local workspacePlayer = game:GetService("Workspace"):WaitForChild(playername)
+
+  local backpack = player.Backpack 
+  local skill = backpack:FindFirstChild(skillName) 
+
+  if skill then
+    skill.Parent = workspacePlayer
+  end
+  
+end
+
 
 function autoAttack()
   while getgenv().toggleAutoAttack == true do
@@ -252,8 +275,8 @@ local Button = MainTab:CreateButton({
 
 
 local DigimonTab = Window:CreateTab("Digimon", nil)
-local DigimonSection = MainTab:CreateSection("Notice")
-local DigimonLabel1 = DigimonTab:CreateLabel("Auto Attack Only For BarbamonX")
+local DigimonSection = DigimonTab:CreateSection("Notice")
+local DigimonLabel1 = DigimonTab:CreateLabel("Auto Attack and Equip Only For BarbamonX")
 local DigimonSection2 = DigimonTab:CreateSection("Automation")
 
 local Toggle3 = DigimonTab:CreateToggle({
@@ -267,6 +290,16 @@ local Toggle3 = DigimonTab:CreateToggle({
 })
 
 local Toggle4 = DigimonTab:CreateToggle({
+  Name = "Auto Equip Skill 1",
+  CurrentValue = false,
+  Flag = "autoequipskill",
+  Callback = function(Value)
+    getgenv().toggleAutoEquipSkill = Value
+    autoEquipSkill()
+  end,
+})
+
+local Toggle5 = DigimonTab:CreateToggle({
   Name = "Auto ATK Chip",
   CurrentValue = false,
   Flag = "autochip",
@@ -291,7 +324,7 @@ local Dropdown3 = DigimonTab:CreateDropdown({
 })
 
 
-local Toggle5 = DigimonTab:CreateToggle({
+local Toggle6 = DigimonTab:CreateToggle({
   Name = "Auto Teleport",
   CurrentValue = false,
   Flag = "autopteleport",
