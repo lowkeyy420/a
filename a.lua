@@ -56,7 +56,7 @@ function acceptQuest(quest)
   local args = {
     [1] = {
       [1] = {
-        [1] = "\28",
+        [1] = "\29",
         [2] = quest,
         [3] = "Accept"
       }
@@ -69,7 +69,7 @@ function submitQuest(quest)
   local args = {
     [1] = {
       [1] = {
-        [1] = "\28",
+        [1] = "\29",
         [2] = quest,
         [3] = "Submit"
       }
@@ -90,7 +90,7 @@ function evolveTo(digimon)
   local args = {
     [1] = {
       [1] = {
-        [1] = "\24",
+        [1] = "\25",
         [2] = digimon,
       }
     }
@@ -126,7 +126,7 @@ function autoAttack()
     local args = {
       [1] = {
               [1] = {
-                  [1] = "\7",
+                  [1] = "\8",
                   [2] = "PandemoniumLostX",
                   [4] = 180,
                   [6] = 1
@@ -139,18 +139,16 @@ function autoAttack()
 end
 
 function autoChip()
-  while getgenv().toggleAutoChip == true do
-    local args = {
-      [1] = {
-              [1] = {
-                  [1] = "\t",
-                  [2] = "ATK"
-              }
-          }
-      }
-    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
-    wait(30)
-  end
+  local args = {
+    [1] = {
+            [1] = {
+                [1] = "\n",
+                [2] = "ATK"
+            }
+        }
+    }
+  game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer(unpack(args))
+  
 end
 
 function autoTeleport()
@@ -299,12 +297,19 @@ local Toggle4 = DigimonTab:CreateToggle({
   end,
 })
 
-local Toggle5 = DigimonTab:CreateToggle({
-  Name = "Auto ATK Chip",
-  CurrentValue = false,
-  Flag = "autochip",
-  Callback = function(Value)
-    getgenv().toggleAutoChip = Value
+-- local Toggle5 = DigimonTab:CreateToggle({
+--   Name = "Auto ATK Chip",
+--   CurrentValue = false,
+--   Flag = "autochip",
+--   Callback = function(Value)
+--     getgenv().toggleAutoChip = Value
+--     autoChip()
+--   end,
+-- })
+
+local AtkChipButton = DigimonTab:CreateButton({
+  Name = "Use ATK Chip",
+  Callback = function()
     autoChip()
   end,
 })
