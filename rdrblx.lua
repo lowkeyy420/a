@@ -92,18 +92,20 @@ end
 function AutoNormalAttack()
   while getgenv().toggleAutoNormalAttack == true do
     playerpos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-
+        
     local args = {
       [1] = {
-          ["CombatAction"] = true,
-          ["Input"] = "Mouse1",
-          ["LightAttack"] = true,
-          ["MouseData"] = CFrame.new(playerpos)
+        ["CombatAction"] = true,
+        ["MouseData"] = CFrame.new(playerpos),
+        ["Input"] = "Mouse1",
+        ["LightAttack"] = true,
+        ["Attack"] = true
       }
-
     }
-    game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("RiderSkillsRemote"):FireServer(unpack(args))
+    
+    game:GetService("Players").LocalPlayer.Character.PlayerHandler.HandlerEvent:FireServer(unpack(args))
     wait(1)    
+    
   end
 end
 
@@ -114,13 +116,14 @@ function AutoHeavyAttack()
     local args = {
       [1] = {
           ["CombatAction"] = true,
-          ["AttackType"] = "Down",
+          ["MouseData"] = CFrame.new(playerpos),
+          ["Input"] = "Mouse2",
           ["HeavyAttack"] = true,
-        ["MouseData"] = CFrame.new(playerpos)
+          ["Attack"] = true
       }
     }
-  
-    game:GetService("ReplicatedStorage"):WaitForChild("Remote"):WaitForChild("Event"):WaitForChild("RiderSkillsRemote"):FireServer(unpack(args))
+
+    game:GetService("Players").LocalPlayer.Character.PlayerHandler.HandlerEvent:FireServer(unpack(args))
     wait(1.5)
   end
 end
